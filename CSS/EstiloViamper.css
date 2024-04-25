@@ -1,0 +1,470 @@
+*{
+    font-family:'Segoe UI',Tahoma,Geneva,Verdana;    
+}
+:root {
+  --fondos: #FF8000;
+  --texto: #ffffff;
+  --fondoverde: #b5cda5; 
+  --verdelogo: #6b9b4b;
+  --verdeborde: #364e26;
+  --negro : #000000;
+}
+/*body{
+    margin: 1;
+}*/
+/*------------HEADER------------*/
+header{
+/*    margin:0;*/
+    /*padding:0;*/
+    width: 100%;
+    height: 175px;
+    background-color: var(--fondos);
+    box-shadow: 3px 5px 5px rgb(0,0,0,0.4);    
+}
+.header_superior{
+    width: 100%;
+    background-color: var(--texto);
+    height: 70px;
+}
+#logotip{
+    width: 80px;
+    /*height: 80px;*/
+    float: left;
+}
+.menu_premium{
+    width: 50%;
+    float: right;
+}
+.container{
+/*  height:175px;
+    position:absolute;*/
+    width: 100%;
+    display:flex;
+    align-items:center;
+    justify-content: space-around;
+}
+.menu{
+    list-style: none;
+}
+.menu li a{
+    color: var(--negro);
+    /*rgba(107,155,75,255)*/
+    text-decoration: none;
+    padding: 10px;/*mover a la derecha un poco*/
+    /*display: block;/*convertirlo en un bloque*/
+    min-width: 100px;/*ancho minimo*/
+    -webkit-transition:all 500ms ease;/*transición al desplegarse*/
+    -o-transition:all 500ms ease;
+	transition:all 500ms ease;
+}
+.menu > li{
+  	float: left;
+	text-align:center;
+}
+.menu ul, li{
+    /*list-style:none;*/
+    /*display:flex;*/
+    padding:0.8em;
+    margin:0;
+}
+.menu li{
+    cursor:pointer;
+    transition:all .5s ease-in-out;
+    margin:0.5em;
+    padding:10px 15px;
+    color: #f5f5f5;
+    border-radius: 20px;
+}
+.menu > li:hover{
+    background-color: var(--fondoverde);
+    box-shadow:3px 5px 5px rgb(0,0,0,0.4);
+}
+.menu li>a:hover{
+    color: var(--verdeborde);
+}
+/*Para menu perfil*/ 
+.menu>li>ul {
+    display: none;
+    position: absolute;
+    z-index: 1;
+}
+
+.menu li:hover > ul {
+    display:block;
+}
+
+.menu li ul li {
+    display:block;
+}
+/*----------WEB------------*/
+.wrapper{
+    width: 100%;
+    min-height: 250px;
+    padding-top: 30px;
+    padding-bottom: 50px;
+}
+.espacio6 {
+    padding: 30px;
+}
+.separacion {
+    margin-top: 40px;
+}
+.espacio {
+    margin-left: 40px;
+}
+.espacio2 {
+    margin-left: 75px;
+}
+.espacio3 {
+    margin-left: 35px;
+}.espacio4 {
+    margin-left: 50px;
+}
+.espacio5 {
+    margin-left: 45px;
+}
+.boton_buscar {
+    margin-left: 325px;
+}
+h3{
+    padding:1em;
+    color: #f5f5f5;
+    letter-spacing: 3px;
+}
+
+.formularios{
+    width: 800px;
+    line-height: 200%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.formularios input:focus{
+    background-color: var(--fondos);
+}
+.buscar .radio{
+    margin-left: 30px;
+}
+.registro{
+    columns: 50% 2;
+    /*outline: 5px solid var(--verdeborde);*/
+    /*background-color: #6faa4a;*/
+    outline: 5px dotted var(--verdelogo);
+    padding: 10px;
+}
+.form-columns{
+    float: left;
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+.form-leyes{
+    clear:both;
+}
+@keyframes slide {
+	0% { transform: translateX(0); }
+	10% { transform: translateX(0); }
+
+	15% { transform: translateX(-100%); }
+	30% { transform: translateX(-100%); }
+
+	35% { transform: translateX(-200%); }
+	50% { transform: translateX(-200%); }
+
+	55% { transform: translateX(-300%); }
+	70% { transform: translateX(-300%); }
+
+	75% { transform: translateX(-400%); }
+	90% { transform: translateX(-400%); }
+
+	95% { transform: translateX(-500%); }
+	100% { transform: translateX(-500%); }
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+	font-family: sans-serif;
+}
+
+.wrapper1 {
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.slider {
+	position: relative;
+}
+
+.slides {
+	position: relative;
+	display: flex;
+	overflow: hidden;
+    list-style: none;
+}
+
+.slide {
+	width: 100vw;
+	flex-shrink: 0;
+	animation-name: slide;
+	animation-duration: 20s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+.slides:hover .slide {
+	animation-play-state: paused;
+}
+
+.slide img {
+	width: 100%;
+	vertical-align: top;
+}
+.foto{
+    width: 500px;
+    height: 700px;
+}
+
+.slide a {
+	width: 100%;
+	display: inline-block;
+	position: relative;
+}
+
+.caption {
+	color: var(--texto);
+	text-shadow: 1px 1px var(--negro);
+	font-size: 8vw;
+	position: fixed;
+	bottom: 8vw;
+	right: 4vw;
+}
+
+.slide:target {
+	animation-name: none;
+	position: absolute;
+	z-index: 50;
+}
+
+@media only screen and (min-width: 1200px) {
+	.slide {
+		width: 1200px;
+	}
+
+	.caption {
+		font-size: 96px;
+		bottom: 96px;
+		right: 50px;
+	}
+}
+.premium {
+    border-collapse: collapse;
+    text-align: center;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    border:var(--fondos);
+}
+/*------------PRODUCTO------------*/
+#general{
+    width:100%;
+    display:grid;
+    grid-template-columns: 70% 30%;
+    /*margin-top: 200px;*/
+}
+#cuatroimagenes{
+    /*width:50%;*/
+    display:grid;
+    grid-template-columns: 200px 200px 200px 200px;
+    grid-gap: 20px;
+}
+#cuatroimagenes img{
+    width: 200px;
+    height: 200px;
+}
+.textoallado{
+    /*width:35%;*/
+    text-align: right;
+    color: var(--negro);
+    margin-right: 55px;
+}
+.botonproducto {
+    margin-right: 150px;
+}
+.boton {
+    cursor:pointer;
+    transition:all .5s ease-in-out;
+    padding:10px 15px;
+    color: var(--negro);
+    border-radius: 20px;
+    border-color: var(--fondos);
+}
+.boton:hover{
+    background-color: #b5cda5;
+    box-shadow:3px 5px 5px rgb(0,0,0,0.4);
+    color: var(--verdeborde);
+}
+#general2{
+    width:100%;
+    display:grid;
+    grid-template-columns: 35% 65%;
+    padding-bottom: 50px;
+}
+/*#imagenprincipal{
+    display:grid;
+}*/
+.imagenprincipalgrande {
+    width: 400px;
+    height: 300px;
+}
+/*#textoprincipal{
+    
+}*/
+/*------------REGISTRO------------*/
+.titulo {
+    text-align: center;
+}
+.titulo_ini {
+    margin-top: 80px;
+}
+.cuadro{
+    width: 400px;
+    margin-bottom: 100px;
+}
+.espacio {
+    margin-left: 275px;
+}
+.puntitos {
+    width: 800px;
+    line-height: 200%;
+    margin-left: auto;
+    margin-right: auto;
+    outline: 5px dotted var(--verdelogo);
+    margin-bottom: 50px;
+}
+/*------------DESTINOS------------*/
+.coches1 {
+    text-align:center;
+    width:100%;
+    display:grid;
+    grid-template-columns: 50% 50%;
+    margin-bottom:50px;
+}
+.coches2 {
+    text-align:center;
+    display:grid;
+    grid-template-columns: 50% 50%;
+}
+.fotoscoches {
+    width: 300px;
+    height:auto;
+}
+/*------------DESTINOS------------*/
+h3 {
+    color: var(--negro);
+}
+.minititulo{
+    margin-left:10px;
+}
+.fotos{
+    width:200px;
+    height:200px;
+}
+.continentes{
+    text-align:center;
+    width:100%;
+    display:grid;
+    grid-template-columns: 33% 33% 33%;
+    margin-bottom:50px;
+}
+.conjunto{
+    text-align:center;
+    display:grid;
+    grid-template-columns: 50% 50%;
+}
+.conjuntos {
+    text-align:center;
+    display:grid;
+    grid-template-columns: 50% 50%;
+}
+.conjunto > a:hover{
+    background-color: var(--texto);
+    box-shadow:3px 5px 5px rgb(0,0,0,0.4);
+}
+.texto{
+    text-align:left;
+}
+/*.textocoches {
+    margin-left: 10px;
+}*/
+.minitexto{
+    font-size:small;
+}
+/*------------PRIVACIDAD/COOKIES------------*/
+.privacidadcookies {
+    padding: 30px;
+}
+/*------------NOSOTROS------------*/
+.nosotros {
+    padding-left: 300px;
+    padding-right: 300px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+#fotito {
+    width: auto;
+    height: auto;
+    margin:10px auto;
+	display:block;
+}
+/*------------FOTTER------------*/
+#footer{
+    /*position: fixed;*/
+    bottom: 0;
+    background-color: var(--fondos);
+}
+.iconos{
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    margin-top: 20px;
+    margin-left: 10px;
+}
+.cajatotal{
+    width:100%;
+    display:grid;
+    grid-template-columns: 20% 80%;
+}
+.cajaredes {
+    text-align:center;
+    width:100%;
+    display:grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    /*margin-bottom:50px;*/
+}
+.caja1{
+    margin-top: 28px;
+}
+.caja2{
+    text-align:center;
+    bottom: 0px;
+}
+.propia {
+    margin-top: 20px;
+}
+.privacidad {
+    margin-left: 350px;
+    align-items:center;
+    text-align:center;
+    width: 100%;
+    display: grid;
+    grid-template-columns : 50% 50%;
+}
+.textoprivacidad {
+    color: var(--negro);
+    text-decoration: none;
+}
