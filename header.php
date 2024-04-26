@@ -1,7 +1,6 @@
-<header style="border-bottom-left-radius: 7px;
-            border-bottom-right-radius: 7px;">
+<header>
     <div class="header_superior">
-    <a href="index.php" target="_blank"><img src="img/LogoViamper.PNG" id="logotip" alt="Viamper" title="Viamper"></a>
+    <a href="index.html" target="_blank"><img src="img/LogoViamper.PNG" id="logotip" alt="Viamper" title="Viamper"></a>
     <nav class="menu_premium">
         <ul class="menu">
             <?php
@@ -29,6 +28,7 @@
     </nav>
     </div>
     <nav class="container">
+    <p style="font-size: 10px;">Esto es un proyecto educativo</p>
         <ul class="menu">
             <li><a href="index.php">Inicio</a></li>
             <li><a href="Nosotros.php">Nosotros</a></li>

@@ -2,7 +2,7 @@
 <html lang="es">
     <head>
     <meta charset="utf-8"/>
-    <meta name="author" content="Nuria y Óscar">
+    <meta name="author" content="Nuria y Oscar">
     <meta name="copyright" content="VIAMPER">
     <link rel="stylesheet" href="css/EstiloViamper.css">
     <title>Registro</title>
@@ -52,7 +52,7 @@ $error_user_creation = false;?>
                 <tr>
                     <td colspan="2">
                         <input type="checkbox" name="proteccion" id="proteccion" value="proteccion" required>
-                        <label for="proteccion">Protección de datos*</label>
+                        <label for="proteccion">Acepto la <a href="Privacidad.php">Política de Privacidad</a> y <a href="Cookies.php">Cookies</a>*</label>
                     </td>
                 </tr>
                 <tr>
@@ -74,7 +74,7 @@ $error_user_creation = false;?>
         if (isset($_POST["enviar"]))
         {
             $login = $_POST['usuario'];
-            $password = $_POST['contraseña'];
+            $password = password_hash($_POST['contraseña'], PASSWORD_DEFAULT); //Algoritmo hash por defecto
             $dni = $_POST['dni'];
             $name = $_POST['nombre'];
             $surname = $_POST['apellidos'];
@@ -82,18 +82,21 @@ $error_user_creation = false;?>
             $email = $_POST['correo'];
             $bank = $_POST['banca'];
     
-            //comprobar que no hay un usuario con los mismos datos
-            $query_check = "select * from clients where login = '$login' or correu = '$email';";
-            $posible_user = mysqli_query($connection, $query_check);
-            $posible_user_array = mysqli_fetch_row($posible_user);
+            //falta hashear las contraseñas en la base de datos
+            //si falla los hashes hay que mirar las versiones de php
 
-            $query_check_workers = "select * from treballadors where login = '$login' or correu = '$email';";
-            $posible_worker = mysqli_query($connection, $query_check_workers);
-            $posible_worker_array = mysqli_fetch_row($posible_worker);
+            //Apartado para evitar injecciones SQL más explicado en estadologin.php
+            $query_check = "SELECT * FROM clients WHERE login = ? OR correu = ?";
+            $query_pre = mysqli_prepare($connection, $query_check);
+            mysqli_stmt_bind_param($stmt_check, "ss", $login, $email);
+            mysqli_stmt_execute($stmt_check);
+            $result_check = mysqli_stmt_get_result($stmt_check);
+            $posible_user_array = mysqli_fetch_row($result_check);
 
-            if ($posible_user_array != null || $posible_worker_array != null)
+            if ($posible_user_array != null)
             {
                 $repeated_user = true;
+                echo $repeated_user;
             }
             else
             {
@@ -105,13 +108,18 @@ $error_user_creation = false;?>
                 $idint = intval($idstring); //Lo paso a int
                 $idint++;
     
-                $insert = "insert into clients (`UID`, `login`, `claupas`, `DNINIE`, `nom`, `cognoms`, `telefon`, `correu`, `comptebancari`, `premium`) 
-                values ($idint, '$login', '$password', '$dni', '$name', '$surname', $phone, '$email', '$bank', b'11');";
+                    //$insert = "insert into clients (`UID`, `login`, `claupas`, `DNINIE`, `nom`, `cognoms`, `telefon`, `correu`, `comptebancari`, `premium`) 
+                    //values ($idint, '$login', '$password', '$dni', '$name', '$surname', $phone, '$email', '$bank', b'11');";
+
+                $insert_query = "INSERT INTO clients (`UID`, `login`, `claupas`, `DNINIE`, `nom`, `cognoms`, `telefon`, `correu`, `comptebancari`, `premium`) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, b'11')";
+                $stmt_insert = mysqli_prepare($connection, $insert_query);
+                mysqli_stmt_bind_param($stmt_insert, "isssssiss", $idint, $login, $password, $dni, $name, $surname, $phone, $email, $bank); //asignación a los ?
                 try
                 {
                     if (mysqli_query($connection, $insert))
                     {
-                        echo '<script>window.location="http://localhost/php/Usuario.php"</script>';
+                        header("Location: ../Usuario.php");
                     }
                 }
                 catch (Exception $exception)

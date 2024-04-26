@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="utf-8"/>
-    <meta name="author" content="Nuria y Óscar">
+    <meta name="author" content="Nuria y Oscar">
     <meta name="copyright" content="VIAMPER">
     <link rel="stylesheet" href="CSS/EstiloViamper.css" >
     <style>
@@ -12,6 +12,29 @@
           border-bottom-left-radius: 7px;
           border-bottom-right-radius: 7px;
       }
+      /*Para menu perfil*/ 
+.menu>li>ul {
+    display: none;
+    /* position: absolute; */
+    list-style: none;
+    position: absolute;
+    justify-content: center;
+    padding: 0px;
+    /* z-index: 1; */
+    /* border-radius: 0 0 5px 5px;  */
+}
+
+.menu li:hover > ul {
+    display:block;
+    position: absolute; 
+    padding: 0px;
+}
+
+.menu li ul li {
+    display:block;  
+   /* padding: 10px 15px;*/
+
+} 
     </style>
     <title>Home</title>
 </head>
