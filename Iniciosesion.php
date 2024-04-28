@@ -2,7 +2,7 @@
 <html lang="es">
     <head>
     <meta charset="UTF-8"/>
-    <meta name="author" content="Nuria y Óscar">
+    <meta name="author" content="Núria y Óscar">
     <meta name="copyright" content="VIAMPER">
     <link rel="stylesheet" href="css/EstiloViamper.css">
     <title>Inicio sesión</title>

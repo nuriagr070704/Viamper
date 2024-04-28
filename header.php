@@ -1,6 +1,6 @@
 <header>
     <div class="header_superior">
-    <a href="index.html" target="_blank"><img src="img/LogoViamper.PNG" id="logotip" alt="Viamper" title="Viamper"></a>
+    <a href="index.php"><img src="img/LogoViamper.PNG" id="logotip" alt="Viamper" title="Viamper"></a>
     <nav class="menu_premium">
         <ul class="menu">
             <?php

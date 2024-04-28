@@ -90,6 +90,7 @@ header{
     display: none;
     position: absolute;
     z-index: 1;
+    border-radius: 0 0 5px 5px; 
 }
 
 .menu li:hover > ul {
@@ -98,6 +99,7 @@ header{
 
 .menu li ul li {
     display:block;
+    padding: 10px 15px;
 }
 /*----------WEB------------*/
 .wrapper{

@@ -7,12 +7,28 @@
         <link rel="stylesheet" href="CSS/EstiloViamper.css">
         <title>Usuario</title>
         <style>
+            .bordes{
+                border-top-left-radius: 7px;
+                border-top-right-radius: 7px;
+                border-bottom-left-radius: 7px;
+                border-bottom-right-radius: 7px;
+            }
+            .margen{
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 30px;
+                background-color: rgb(172, 204, 150);
+            }
             table { 
                 border-spacing: 5px;
                 border-collapse: separate;
             }
             td { 
                 padding: 5px;
+            }
+            a {
+                text-decoration: none;
+                color: black;
             }
         </style>
     </head>
@@ -220,7 +236,96 @@
     }
     ?>
     </div>
-    <?php 
+    <h2 style="text-align: center;">Lista de deseos</h2></br>
+    <h3 style="text-align: center;">Hoteles soñados</h3></br>
+    <?php
+    $accomodation_query="select * from allotjament where ID in 
+    (select allotjament_ID from llista_desitjos where clients_UID = 
+    (select UID from clients where login = '" . $_SESSION['usuario'] . "'));";
+    $query_result = mysqli_query($connection, $accomodation_query);
+    if(mysqli_num_rows($query_result) == 0){
+    // empty para mirar si el array esta vacio
+    ?>
+    <div class="wrapper formularios registro buscar" style="margin-top: 30px;">
+        <h2 class="titulo">Uy, no puede ser. No tienes ningún destino en la lista de deseos.</h2>
+        <div style="text-align:center;">
+            <form action="Destinos.php" method="post">
+            <input type="submit" value="¡Haz que eso cambie!" name="example" class="boton" style="font-weight: bold;">
+            </form>
+        </div>
+    </div>
+    <?php
+}else{
+    while ($result_formated = mysqli_fetch_row($query_result)){
+        ?>
+        <div class="margen bordes" style="width: 35%;">
+        <a href="destino_seleccionado.php?id=<?php echo $result_formated[0];?>">
+        <table class="bordes" style="padding: 10px; margin-left: 10%;">
+                <tbody>
+                    <tr>
+                        <td rowspan="2"><img class="bordes" src="img/Destinos/<?php echo $result_formated[4]; ?>.jpg" style="max-width: 200px; margin-right: 40px"></td>
+                        <td><?php echo $result_formated[1]; ?></td>
+                    </tr>
+                    <tr>
+                        <td><p>Estrellas: <?php echo $result_formated[2]; ?><br>
+                            Ubicación: <?php echo $result_formated[4]; ?>, <?php echo $result_formated[3]; ?><br>
+                            Pensión: <?php if ($result_formated[5]) {echo $result_formated[5];} else {echo "Sin pensión";} ?><br></p>
+                            Precio: <?php echo quitarDecimales($result_formated[10])?><br>
+                        </td>
+                    </tr>
+                </tbody>
+        </table>
+        </a>
+        </div>
+        <?php } ?>  
+    <?php
+    }
+    ?>
+        <h3 style="text-align: center;">Coches soñados</h3></br>
+    <?php
+    $accomodation_query2="select * from cotxe where ID in 
+    (select cotxe_ID from llista_desitjos where clients_UID = 
+    (select UID from clients where login = '" . $_SESSION['usuario'] . "'));";
+    $query_result2 = mysqli_query($connection, $accomodation_query2);
+    if(mysqli_num_rows($query_result2) == 0){
+        // empty para mirar si el array esta vacio
+        ?>
+        <div class="wrapper formularios registro buscar" style="margin-top: 30px;">
+            <h2 class="titulo">Uy, no puede ser. No tienes ningún coche en la lista de deseos.</h2>
+            <div style="text-align:center;">
+                <form action="Coches.php" method="post">
+                <input type="submit" value="¡Haz que eso cambie!" name="example" class="boton" style="font-weight: bold;">
+                </form>
+            </div>
+        </div>
+        <?php
+    }else{
+        while ($result_formated2 = mysqli_fetch_row($query_result2)){
+            ?>
+            <div class="margen bordes" style="width: 35%;">
+            <a href="coche_seleccionado.php?id=<?php echo $result_formated2[0]; ?>">
+            <table class="bordes" style="padding: 10px; margin-left: 10%;">
+                <tbody>
+                    <tr>
+                        <td rowspan="2"><img class="bordes" src="img/CochesAlquiler/<?php echo $result_formated2[0]; ?>.jpg" style="max-width: 200px; margin-right: 40px"></td> 
+                    </tr>
+                    <tr>
+                        <td><p><?php echo $result_formated2[1]; ?><br><br>
+                            Marca: <?php echo $result_formated2[2]; ?><br>
+                            Modelo: <?php echo $result_formated2[3]; ?><br>
+                            Asientos: <?php echo $result_formated2[5]; ?><br>
+                            Puertas: <?php echo $result_formated2[6]; ?><br>
+                            Tipo de marcha: <?php echo $result_formated2[7]; ?><br></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </a>
+            </div>
+            <?php } ?>
+    <?php        
+    }
+
     if (isset($_POST['enviar']))
     {
         $login = $_POST['login'];
@@ -277,7 +382,7 @@
             </div>
             <?php
         }
-    } 
+    }
     } else { ?>
         <div class="wrapper formularios registro buscar" style="margin-top: 30px;">
             <h2 class="titulo">Ups. Parece que no tienes permisos para acceder a esta página.</h2>

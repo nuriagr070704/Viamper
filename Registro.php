@@ -66,7 +66,7 @@ $error_user_creation = false;?>
                 </tr>
 
                 <tr>
-                    <td colspan="2"><p style="text-align: center;">¿Ya tienes una cuenta? <a href="http://localhost/php/Iniciosesion.php">Inicia sesión</a></p></td>
+                    <td colspan="2"><p style="text-align: center;">¿Ya tienes una cuenta? <a href="Iniciosesion.php">Inicia sesión</a></p></td>
                 </tr>
             </table>
         </form>
@@ -81,9 +81,6 @@ $error_user_creation = false;?>
             $phone = $_POST['movil'];
             $email = $_POST['correo'];
             $bank = $_POST['banca'];
-    
-            //falta hashear las contraseñas en la base de datos
-            //si falla los hashes hay que mirar las versiones de php
 
             //Apartado para evitar injecciones SQL más explicado en estadologin.php
             $query_check = "SELECT * FROM clients WHERE login = ? OR correu = ?";
@@ -107,9 +104,6 @@ $error_user_creation = false;?>
                 $idint = intval($idstring); //Lo paso a int
                 $idint++;
     
-                    //$insert = "insert into clients (`UID`, `login`, `claupas`, `DNINIE`, `nom`, `cognoms`, `telefon`, `correu`, `comptebancari`, `premium`) 
-                    //values ($idint, '$login', '$password', '$dni', '$name', '$surname', $phone, '$email', '$bank', b'11');";
-
                 $insert_query = "INSERT INTO clients (`UID`, `login`, `claupas`, `DNINIE`, `nom`, `cognoms`, `telefon`, `correu`, `comptebancari`, `premium`) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, b'11')";
                 $stmt_insert = mysqli_prepare($connection, $insert_query);

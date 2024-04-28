@@ -42,22 +42,3 @@
         <?php include 'footer.php' ?>
     </body>
 </html>
-<?php
-if (isset($_POST["enviar"]))
-{
-    // require('PHPMailer.php');
-    // require('SMTP.php');
-    // $nombre = $_POST['nombre'];
-    // $correo = $_POST['correo'];
-
-    // $to = "n.gurillo22563@culturalbadalona.com";
-    // $title = "Mensaje de $nombre desde $correo";
-    // $message = $_POST['motivo'];
-    // //$headers = 'MIME-Version: 1.0' . "\r\n";
-    // $headers = 'From: <culturalgurilloruizn@gmail.com>';
-    // //$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-
-    // $test =  mail($to, $title, $message, $headers);
-
-}
-?>
