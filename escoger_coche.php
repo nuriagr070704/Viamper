@@ -35,7 +35,7 @@
                 $diferencia = $inicio->diff($fin);
 
                 // Obtener el total de noches
-                $totalNoches = $diferencia->days - 1;
+                $totalNoches = $diferencia->days;
 
                 return $totalNoches;
             }
@@ -47,9 +47,10 @@
 
             $query_accomodation = "select * from cotxe where seients >= '$personas';";
             $query_result = mysqli_query($connection, $query_accomodation);
-            
+            $contador = 0;
             while ($result_formated = mysqli_fetch_row($query_result)){ 
-                $precio_coche = 12 * $result_formated[6] * $noches;?>
+                $precio_coche = 12 * $result_formated[6] * $noches;
+                $contador++; ?>
             <div class="margen bordes" style="width: 50%;">
                 <a href="escoger_seguro.php?id=<?php echo $result_formated[0];?>">
                 <table class="bordes" style="padding: 10px; width: 100%;">
@@ -70,6 +71,17 @@
                         </tbody>
                 </table>
                 </a>
+            </div>
+            <?php }
+            if ($contador==0) { ?>
+            <div class="wrapper formularios registro buscar" style="margin-top: 30px;">
+                <h2 class="titulo">Vaya, parece que no tenemos vehículos disponibles.</h2>
+                <div style="text-align:center;">
+                    <p>Sentimos que no tengamos vehículos.<br>Puedes volver a intentarlo más tarde.</p>
+                    <form action="index.php" method="post">
+                    <input type="submit" value="Volver al inicio" name="enviar" class="boton" style="font-weight: bold;">
+                    </form>
+                </div>
             </div>
             <?php }
         } else {

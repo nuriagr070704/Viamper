@@ -45,9 +45,10 @@
 
             $query_accomodation = "select * from vol where origen = '$destino' and desti = '$origen';";
             $query_result = mysqli_query($connection, $query_accomodation);
-            
+            $contador = 0;
             while ($result_formated = mysqli_fetch_row($query_result)){ 
-                $precio_vol_tornada = 50 * $personas;?>
+                $precio_vol_tornada = 50 * $personas;
+                $contador++; ?>
             <div class="margen bordes" style="width: 35%;">
                 <a href="escoger_coche.php?id=<?php echo $result_formated[0];?>">
                 <table class="bordes" style="padding: 10px; margin-left: 10%;">
@@ -69,6 +70,17 @@
                         </tbody>
                 </table>
                 </a>
+            </div>
+            <?php }
+            if ($contador==0) { ?>
+            <div class="wrapper formularios registro buscar" style="margin-top: 30px;">
+                <h2 class="titulo">Vaya, parece que no tenemos vuelos disponibles para este destino.</h2>
+                <div style="text-align:center;">
+                    <p>Sentimos que no tengamos vuelos para tu destino.<br>Puedes volver a intentarlo más tarde o buscar otro viaje hacia otro de nuestros destinos.</p>
+                    <form action="index.php" method="post">
+                    <input type="submit" value="Volver al inicio" name="enviar" class="boton" style="font-weight: bold;">
+                    </form>
+                </div>
             </div>
             <?php }
         } else {

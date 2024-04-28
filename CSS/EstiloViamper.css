@@ -9,6 +9,9 @@
   --verdeborde: #364e26;
   --negro : #000000;
 }
+a{
+    text-decoration: none;
+}
 /*body{
     margin: 1;
 }*/

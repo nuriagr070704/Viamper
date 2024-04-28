@@ -43,7 +43,7 @@
                 $diferencia = $inicio->diff($fin);
 
                 // Obtener el total de noches
-                $totalNoches = $diferencia->days - 1;
+                $totalNoches = $diferencia->days;
 
                 return $totalNoches;
             }
@@ -52,9 +52,10 @@
 
             $query_accomodation = "select * from allotjament where ciutat = '$destination';";
             $query_result = mysqli_query($connection, $query_accomodation);
-            
+            $contador = 0;
             while ($result_formated = mysqli_fetch_row($query_result)){
-                $precio_allotjament = $result_formated[10] * $person * $noches; ?>
+                $precio_allotjament = $result_formated[10] * $person * $noches;
+                $contador++; ?>
             <div class="margen bordes" style="width: 40%;">
                 <a href="escoger_vuelos.php?id=<?php echo $result_formated[0];?>">
                 <table class="bordes" style="padding: 10px; margin-left: 10%;">
@@ -74,6 +75,17 @@
                         </tbody>
                 </table>
                 </a>
+            </div>
+            <?php }
+            if ($contador==0) { ?>
+            <div class="wrapper formularios registro buscar" style="margin-top: 30px;">
+                <h2 class="titulo">Vaya, parece que no tenemos alojamientos disponibles para este destino.</h2>
+                <div style="text-align:center;">
+                    <p>Sentimos que no tengamos alojamientos para tu destino.<br>Puedes volver a intentarlo más tarde o buscar otro viaje hacia otro de nuestros destinos.</p>
+                    <form action="index.php" method="post">
+                    <input type="submit" value="Volver al inicio" name="enviar" class="boton" style="font-weight: bold;">
+                    </form>
+                </div>
             </div>
             <?php }
         } else {

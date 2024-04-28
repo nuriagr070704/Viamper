@@ -31,6 +31,35 @@
                 $id = $_GET['id'];
                 setcookie('seguro_id', $id, time() + (86400 * 30), '/');
             }
+
+            function quitarHora($fecha) {
+                // Separar la fecha y la hora por el espacio en blanco
+                $partes = explode(" ", $fecha);
+            
+                // La parte de la fecha está en la primera posición del array $partes
+                $fechaSinHora = $partes[0];
+
+                $timestamp = strtotime($fechaSinHora);
+
+                $dia = date('d', $timestamp);
+                $mes = date('m', $timestamp);
+                $ano = date('Y', $timestamp);
+                
+                $nueva_fecha = $dia . '-' . $mes . '-' . $ano;
+                
+                return $nueva_fecha;
+            }
+
+            function validarDiferenciaFechas($fechaInicio, $fechaFin) {
+                $inicio = new DateTime(quitarHora($fechaInicio));
+                $fin = new DateTime($fechaFin);
+            
+                if ($inicio > $fin) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
             
             ?>
             <div style="text-align: center; margin-top: 20px;">
@@ -38,7 +67,7 @@
             </div>
             <div class="margen bordes" style="width: 40%;">
                 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" class="formularios" method="post" enctype="multipart/form-data" style="width: 100%;">
-                    <table border="1px" class="bordes" style="padding: 10px;"><tbody>
+                    <table align="center" class="bordes" style="padding: 10px;"><tbody>
                         <tr>
                             <td><label for="codigo" id="separacion1">Introduce el código de la oferta:</label></td>
                         </tr>
@@ -74,28 +103,44 @@
             $query_accomodation = "select * from ofertes where codi = '$codigo';";
             $query_result = mysqli_query($connection, $query_accomodation);
             while ($result_formated = mysqli_fetch_row($query_result)){
-                ?>
-                <div class="margen bordes" style="width: 30%;">
-                <a href="pagar.php?id=<?php echo $result_formated[0];?>">
-                <table class="bordes" style="padding: 10px;">
-                        <tbody>
-                            <tr>
-                                <th colspan="4"><?php echo $result_formated[1]; ?></th>
-                            </tr>
-                            <tr>
-                                <th>Código</th><td></td><td></td><td><?php echo $result_formated[2]; ?></td>
-                            </tr>
-                            <tr>
-                                <th>Descripción</th><td></td><td></td><td><?php echo $result_formated[3]; ?></td>
-                            </tr>
-                            <tr>
-                                <th>Validez</th><td></td><td></td><td><?php echo $result_formated[5]; ?></td>
-                            </tr>
-                        </tbody>
-                </table>
-                </a>
-            </div>
-                <?php
+                if (validarDiferenciaFechas($result_formated[5], date("d-m-Y"))){
+                    ?>
+                    <div class="margen bordes" style="width: 30%;">
+                    <a href="pagar.php?id=<?php echo $result_formated[0];?>">
+                    <table class="bordes" style="padding: 10px;">
+                            <tbody>
+                                <tr>
+                                    <th colspan="4"><?php echo $result_formated[1]; ?></th>
+                                </tr>
+                                <tr>
+                                    <th>Código</th><td></td><td></td><td><?php echo $result_formated[2]; ?></td>
+                                </tr>
+                                <tr>
+                                    <th>Descripción</th><td></td><td></td><td><?php echo $result_formated[3]; ?></td>
+                                </tr>
+                                <tr>
+                                    <th>Validez</th><td></td><td></td><td><?php echo $result_formated[5]; ?></td>
+                                </tr>
+                            </tbody>
+                    </table>
+                    </a>
+                    </div>
+                    <?php
+                } else {
+                    ?>
+                    <div class="margen bordes" style="width: 30%;">
+                    <table align="center" class="bordes" style="padding: 10px;">
+                            <tbody>
+                                <tr>
+                                    <th colspan="4">Oferta caducada</th>
+                                </tr>
+                                <tr>
+                                    <td>Esta oferta no está disponible.</td>
+                            </tbody>
+                    </table>
+                    </div>
+                    <?php
+                }
             }
         }
         include 'footer.php' ?>

@@ -18,6 +18,9 @@
                 margin-top: 30px;
                 background-color: rgb(172, 204, 150);
             }
+            a{
+                color: black;
+            }
         </style>
         <title>Coches de alquiler</title>
     </head>

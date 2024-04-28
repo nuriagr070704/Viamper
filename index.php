@@ -36,7 +36,7 @@
 
 } 
     </style>
-    <title>Home</title>
+    <title>Inicio</title>
 </head>
 <body>
 <?php include 'header.php';

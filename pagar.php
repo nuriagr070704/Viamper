@@ -39,7 +39,7 @@
                 $diferencia = $inicio->diff($fin);
 
                 // Obtener el total de noches
-                $totalNoches = $diferencia->days - 1;
+                $totalNoches = $diferencia->days;
 
                 return $totalNoches;
             }
@@ -80,6 +80,7 @@
             $precio_vol_tornada = 0;
             $precio_coche = 0;
             $precio_seguro = 0;
+            $descuento = 0;
 
             $id_allotjament = 0;
             $id_vol_anada = 0;
@@ -95,7 +96,7 @@
                 $id_allotjament = $result_alojamiento[0];
                 ?>
             <div class="margen bordes" style="width: 35%;">
-            <table class="bordes" style="padding: 10px; margin-left: 10%;">
+            <table align="center" class="bordes" style="padding: 10px;">
                 <h3>Alojamiento</h3>
                 <tbody>
                     <tr>
@@ -123,7 +124,7 @@
                     $id_vol_anada = $result_vuelo_ida[0];
                 ?>
                 <div class="margen bordes" style="width: 35%;">
-                <table class="bordes" style="padding: 10px; margin-left: 10%;">
+                <table align="center" class="bordes" style="padding: 10px;">
                 <h3>Vuelo de ida</h3>
                     <tbody>
                         <tr>
@@ -154,7 +155,7 @@
                         $id_vol_tornada = $result_vuelo_vuelta[0];
                         ?>
                     <div class="margen bordes" style="width: 35%;">
-                    <table class="bordes" style="padding: 10px; margin-left: 10%;">
+                    <table align="center" class="bordes" style="padding: 10px;">
                     <h3>Vuelo de vuelta</h3>
                         <tbody>
                             <tr>
@@ -185,7 +186,7 @@
                             $id_coche = $result_coche[0];
                             ?>
                         <div class="margen bordes" style="width: 35%;">
-                        <table class="bordes" style="padding: 10px; width: 100%;">
+                        <table align="center" class="bordes" style="padding: 10px; width: 100%;">
                         <h3>Vehículo</h3>
                             <tbody>
                             <tr>
@@ -212,7 +213,7 @@
                                 $id_seguro = $result_seguro[0];
                                 ?>
                             <div class="margen bordes" style="width: 35%;">
-                            <table class="bordes" style="padding: 10px; margin-left: 10%;">
+                            <table align="center" class="bordes" style="padding: 10px;">
                             <h3>Seguro</h3>
                                 <tbody>
                                     <tr>
@@ -237,9 +238,10 @@
                                 $query_oferta = mysqli_query($connection, $oferta_query);
                                 while ($result_oferta = mysqli_fetch_row($query_oferta)){
                                     $id_ofertes = $result_oferta[0];
+                                    $descuento = $result_oferta[1];
                                     ?>
                                 <div class="margen bordes" style="width: 35%;">
-                                <table class="bordes" style="padding: 10px;">
+                                <table align="center" class="bordes" style="padding: 10px;">
                                 <h3>Oferta aplicada</h3>
                                     <tbody>
                                         <tr>
@@ -269,14 +271,37 @@
             $cuota = $total_viaje*0.21;
             $base_parsed = str_replace(".", ",", $base);
             $cuota_parsed = str_replace(".", ",", $cuota);
-            
+
             $id_client = 0;
+            $es_premium = false;
             if ($is_user_set){
             $query_id_client = "select * from clients where login = '$usuario';";
             $result_query_id_client = mysqli_query($connection, $query_id_client);
             while ($resultado_consulta = mysqli_fetch_row($result_query_id_client)){
                 $id_client = $resultado_consulta[0];
+                if ($resultado_consulta[9] == '3') {
+                    $es_premium = true;
+                }
             }
+            }
+
+            $precio_final = $total_viaje;
+
+            if ($es_premium) {
+                $precio_descuento_premium = $total_viaje*(15/100);
+                $precio_descuento_premium_parsed = str_replace(".", ",", $precio_descuento_premium);
+                $precio_final = $precio_final - $precio_descuento_premium;
+            }
+
+            if ($oferta_id != 0) {
+                if (str_contains(strtoupper($descuento), 'X')) {
+                    $porcentaje = 50;
+                } else {
+                    $porcentaje = 15;
+                }
+                $precio_descuento = $total_viaje*($porcentaje/100);
+                $precio_descuento_parsed = str_replace(".", ",", $precio_descuento);
+                $precio_final = $precio_final - $precio_descuento;
             }
 
             $id_viatge = 0;
@@ -298,12 +323,17 @@
                 <?php if ($id_client != 0)
                 { ?>
                     <input type="hidden" name="id_client" value="<?php echo "$id_client"; ?>"/>
-                <?php } ?>
-                <input type="hidden" name="preu_viatge" value="<?php echo "$total_viaje"; ?>"/>
+                <?php } 
+                if ($oferta_id != 0 || $es_premium) {
+                    ?> <input type="hidden" name="preu_viatge" value="<?php echo "$precio_final"; ?>"/> <?php
+                } else {
+                    ?> <input type="hidden" name="preu_viatge" value="<?php echo "$total_viaje"; ?>"/> <?php
+                }
+                ?>
                 <input type="hidden" name="id_assegurança" value="<?php echo "$id_seguro"; ?>"/>
                 <input type="hidden" name="preu_assegurança" value="<?php echo "$precio_seguro"; ?>"/>
                 <input type="hidden" name="seguent_id_viatge" value="<?php echo "$id_viatge"; ?>"/>
-                    <table class="bordes" style="padding: 10px; width: 66%"><tbody>
+                    <table align="center" class="bordes" style="padding: 10px; width: 66%"><tbody>
                         <tr>
                             <td>Base</td><td>%</td><td>Cuota</td>
                         </tr>
@@ -311,22 +341,52 @@
                             <td><?php echo $base_parsed; ?></td><td>21,00</td><td><?php echo $cuota_parsed; ?></td>
                         </tr>
                         <tr>
-                            <td><strong>Total viaje: </strong></td><td><strong><?php echo "$total_viaje €"; ?></strong></td>
+                            <td colspan="4"><hr></td>
                         </tr>
                         <tr>
-                            <td colspan="3">
+                            <td><strong>Total viaje </strong></td><td><strong><?php echo "$total_viaje €"; ?></strong></td><td></td>
+                        </tr>
+                        <?php
+                        if ($es_premium) { ?>
+                            <tr>
+                                <td><strong>Descuento por ser premium</strong></td>
+                                <td><strong><?php echo "-$precio_descuento_premium_parsed €"; ?></strong></td>
+                            </tr>
+                        <?php } ?>
+                        <?php
+                        if ($oferta_id != 0) { ?>
+                            <tr>
+                                <td><strong>Descuento por oferta</strong></td>
+                                <td><strong><?php echo "-$precio_descuento_parsed €"; ?></strong></td>
+                            </tr>
+                        <?php } 
+                        if ($es_premium || $oferta_id != 0) { ?>
+                            <tr>
+                                <td><strong>Total final</strong></td>
+                                <td><strong><?php echo str_replace(".", ",", $precio_final)." €"; ?></strong></td>
+                            </tr>
+                        <?php } ?>
+                        <tr>
+                            <td colspan="4">
                             <?php
-                            if (isset($_SESSION['usuario'])) { ?>
-                                <input type="submit" name="enviar" id="enviar" value="Comprar viaje" class="boton"  style="width: 100%; font-weight: bold;">
-                            <?php } else { ?>
-                                <p>Antes de comprar <a href="Iniciosesion.php">inicia sesión</a> o <a href="Registro.php">registrate</a></p>
+                            if (isset($_SESSION['usuario'])) { 
+                                if ($_SESSION['puesto']=="trabajador") {
+                                    ?>
+                                    <p>No puedes comprar viajes con una cuenta de trabajador, inicia sesión con una cuenta de cliente.</p>
+                                    <?php
+                                } else {
+                                    ?>
+                                    <input type="submit" name="enviar" id="enviar" value="Comprar viaje" class="boton"  style="width: 100%; font-weight: bold;">
+                                    <?php
+                                }
+                            } else { ?>
+                                <p>Antes de comprar <a href="Iniciosesion.php">inicia sesión</a> o <a href="Registro.php">registrate</a>.</p>
                             <?php } ?>
                             </td>
                         </tr>
                     </tbody></table>
                 </form>
             </div>
-            
             <?php
         } ?>
     </body>

@@ -63,13 +63,14 @@
             $diferencia = $inicio->diff($fin);
 
             // Obtener el total de noches
-            $totalNoches = $diferencia->days - 1;
+            $totalNoches = $diferencia->days;
 
             return $totalNoches;
         }
 
         $personas = $_COOKIE['personas'];
         $noches = HowManyNights($data_inici, $data_fi);
+        $error = false;
 
         //guardar viaje en viatge
         if ($id_ofertes=='0') {
@@ -79,12 +80,37 @@
         } else {
             $query_id_viatge = "insert into viatge values ($id_viatge, '$data_inici', '$data_fi', $preu_viatge, $id_client, 1, $id_allotjament, $id_vol_anada, $id_vol_tornada, $id_ofertes, $id_coche);";
         }
-        //$result_query_id_viatge = mysqli_query($connection, $query_id_viatge);
+        try {
+            $result_query_id_viatge = mysqli_query($connection, $query_id_viatge);
+        } catch (Exception $ex) { 
+            $error = true; ?>
+            <div class="wrapper formularios registro buscar" style="margin-top: 30px;">
+              <h2 class="titulo">Ups. Parece que no hemos podido reservar tu viaje.</h2>
+              <div style="text-align:center;">
+                  <form action="index.php" method="post">
+                  <input type="submit" value="Volver al inicio" name="enviar" class="boton" style="font-weight: bold;">
+                  </form>
+              </div>
+            </div>
+        <?php }
 
         //guardar seguro en assegurança_has_clients
-        echo "$id_seguro<br>";
         $query_id_assegurança = "insert into assegurança_has_clients values ($id_seguro, $id_client, $preu_assegurança, $id_allotjament, $id_vol_anada, $id_vol_tornada, $id_coche);";
-        $result_query_id_assegurança = mysqli_query($connection, $query_id_assegurança);
+        try {
+            $result_query_id_assegurança = mysqli_query($connection, $query_id_assegurança);
+        } catch (Exception $ex) { 
+            $error = true; ?>
+            <div class="wrapper formularios registro buscar" style="margin-top: 30px;">
+              <h2 class="titulo">Ups. El seguro que has elegido ya lo has elegido antes. Asegurate de elegir otro al volver a reservar</h2>
+              <div style="text-align:center;">
+                  <form action="index.php" method="post">
+                  <input type="submit" value="Volver al inicio" name="enviar" class="boton" style="font-weight: bold;">
+                  </form>
+              </div>
+            </div>
+        <?php }
+        
+        if (!$error) {
         ?>
         <div class="margen bordes" style="width: 35%;">
             <table class="bordes" style="padding: 10px; margin-left: 10%;">
@@ -276,6 +302,35 @@
                     }
                 }
             }
+            $usuario = $_SESSION['usuario'];
+            $nombre = "";
+            $correo = "";
+            $oferta = "";
+            $codigo = "";
+            $query_usuario = mysqli_query($connection, "select * from clients where login = '$usuario';");
+            while ($result_usuario_query = mysqli_fetch_row($query_usuario)){
+                $query_ofertes = mysqli_query($connection, "select * from ofertes where idofertes = 1;");
+                while ($result_ofertes_query = mysqli_fetch_row($query_ofertes)){
+            ?>
+            <div class="wrapper formularios registro buscar" style="margin-top: 30px;">
+            <h2 class="titulo">Un regalito de nuestra parte</h2>
+            <form action="enviar_oferta.php" name="enviar_oferta" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="nombre" value="<?php echo $result_usuario_query[4].", ".$result_usuario_query[5] ?>"/>
+                <input type="hidden" name="correo" value="<?php echo $result_usuario_query[7] ?>"/>
+                <input type="hidden" name="oferta" value="<?php echo $result_ofertes_query[1] ?>"/>
+                <input type="hidden" name="codigo" value="<?php echo $result_ofertes_query[2] ?>"/>
+                <table align="center" style="text-align: center;" cellpadding=10>
+                    <tr>
+                        <td>Por esta última compra te regalamos un código de descuento para asegurarnos de que haya una siguiente.</td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" name="enviar" value="Conseguir una oferta" class="boton"/></td>
+                    </tr>
+                </table>
+            </form>
+                </div>
+            <?php
+            }}}
     } else {
         ?>
         <div class="wrapper formularios registro buscar" style="margin-top: 30px;">

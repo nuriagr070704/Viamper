@@ -88,15 +88,14 @@ $error_user_creation = false;?>
             //Apartado para evitar injecciones SQL más explicado en estadologin.php
             $query_check = "SELECT * FROM clients WHERE login = ? OR correu = ?";
             $query_pre = mysqli_prepare($connection, $query_check);
-            mysqli_stmt_bind_param($stmt_check, "ss", $login, $email);
-            mysqli_stmt_execute($stmt_check);
-            $result_check = mysqli_stmt_get_result($stmt_check);
+            mysqli_stmt_bind_param($query_pre, "ss", $login, $email);
+            mysqli_stmt_execute($query_pre);
+            $result_check = mysqli_stmt_get_result($query_pre);
             $posible_user_array = mysqli_fetch_row($result_check);
 
             if ($posible_user_array != null)
             {
                 $repeated_user = true;
-                echo $repeated_user;
             }
             else
             {
@@ -115,9 +114,10 @@ $error_user_creation = false;?>
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, b'11')";
                 $stmt_insert = mysqli_prepare($connection, $insert_query);
                 mysqli_stmt_bind_param($stmt_insert, "isssssiss", $idint, $login, $password, $dni, $name, $surname, $phone, $email, $bank); //asignación a los ?
+                mysqli_stmt_execute($stmt_insert);
                 try
                 {
-                    if (mysqli_query($connection, $insert))
+                    if (mysqli_stmt_get_result($stmt_insert))
                     {
                         header("Location: ../Usuario.php");
                     }

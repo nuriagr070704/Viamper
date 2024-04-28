@@ -12,10 +12,10 @@
             border-bottom-right-radius: 7px;
         }
         .images {
-            height: 200px;
+            height: 150px;
         }
         .big_image{
-            height: 600px;
+            height: 500px;
         }
         .margen{
             margin-left: 10%;
@@ -27,6 +27,19 @@
 </head>
 <body>
 <?php include 'header.php';
+function cambiar_formato_hora($hora) {
+    // Dividir la cadena en horas, minutos y segundos
+    $partes = explode(":", $hora);
+    
+    // Tomar solo las horas y los minutos
+    $horas = $partes[0];
+    $minutos = $partes[1];
+    
+    // Crear la nueva cadena de hora en el formato hh:mm
+    $nueva_hora = $horas . ":" . $minutos;
+    
+    return $nueva_hora;
+}
 $id = $_GET['id'];
 $accomodation_query="select * from allotjament where ID = $id;";
 $query_result = mysqli_query($connection, $accomodation_query);
@@ -35,11 +48,11 @@ while ($result_formated = mysqli_fetch_row($query_result)){
 
 ?>
 <div class="margen">
-    <h1><?php echo $result_formated[1]; ?>, <?php echo $result_formated[3]; ?></h1>
+    <h1 align="center"><?php echo $result_formated[1]; ?>, <?php echo $result_formated[3]; ?></h1>
     <table align="center">
         <tr>
             <?php for ($index=1; $index<5; $index++) { ?>
-            <td><img class="bordes images" src="img/Producto/<?php echo $result_formated[4]; ?>/<?php echo $index; ?>.jpg"></td>
+            <td><img class="bordes images" src="img/Producto/<?php echo $result_formated[4]; ?>/<?php echo $index; ?>.jpg" alt="hola"></td>
             <?php } ?>
         </tr>
     </table>
@@ -51,8 +64,8 @@ while ($result_formated = mysqli_fetch_row($query_result)){
     <p>Estrellas: <?php echo $result_formated[2]; ?></p>
     <p>Ciudad: <?php echo $result_formated[4]; ?></p>
     <p>País: <?php echo $result_formated[3]; ?></p>
-    <p>Hora de check-in: <?php echo $result_formated[6]; ?></p>
-    <p>Hora de check-out: <?php echo $result_formated[7]; ?></p>
+    <p>Hora de check-in: <?php echo cambiar_formato_hora($result_formated[6]); ?></p>
+    <p>Hora de check-out: <?php echo cambiar_formato_hora($result_formated[7]); ?></p>
     <p>Pensión: <?php if ($result_formated[5]) {echo $result_formated[5];} else {echo "Sin pensión";} ?></p>
     <p>Habitaciones libres actualmente: <?php echo $result_formated[8]; ?></p>
     <p>Precio por noche y persona: <?php echo round($result_formated[10], 2); ?> €</p>

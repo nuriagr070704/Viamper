@@ -8,13 +8,10 @@
                 include 'database/connection.php';
                 if($usuario_iniciado){
             ?>
-                    <li>
-                        <a href="">Perfil</a>
-                        <ul>
-                            <li><a href="usuario.php">Mi perfil</a></li>
-                            <li><a href="database/cerrar_session.php">Cerrar sesión</a></li>
-                        </ul>
-                    </li>
+                <?php
+                if($_SESSION['puesto']=="trabajador"){ ?><li><a href="Trabajador.php">Mi perfil</a></li><?php
+                } else { ?> <li><a href="usuario.php">Mi perfil</a></li> <?php } ?>
+                <li><a href="database/cerrar_session.php">Cerrar sesión</a></li>
             <?php
                 }else{ 
             ?>
@@ -28,7 +25,7 @@
     </nav>
     </div>
     <nav class="container">
-    <p style="font-size: 10px;">Esto es un proyecto educativo</p>
+    <p style="font-size: 10px;">Esta web es un proyecto educativo</p>
         <ul class="menu">
             <li><a href="index.php">Inicio</a></li>
             <li><a href="Nosotros.php">Nosotros</a></li>

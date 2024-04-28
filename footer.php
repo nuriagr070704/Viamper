@@ -53,7 +53,7 @@
                     <a href="Cookies.php" target="_blank" class="textoprivacidad"><p>Política de cookies</p></a>
                 </div>
                 <div>
-                <p class="textoprivacidad" style="font-size: 10px; margin-right: 15px;">Aquesta web es un projecte educatiu</p>
+                <p class="textoprivacidad" style="font-size: 10px; margin-right: 15px;">Esta web es un proyecto educativo</p>
                 </div>
                 <div>
                 <img class="textoprivacidad" style="width: 200px;" src="img/CreativeCommons.png">

@@ -48,7 +48,7 @@
                 $diferencia = $inicio->diff($fin);
 
                 // Obtener el total de noches
-                $totalNoches = $diferencia->days - 1;
+                $totalNoches = $diferencia->days;
 
                 return $totalNoches;
             }
@@ -62,9 +62,10 @@
 
             $query_accomodation = "select * from assegurança where persones = '$personas' and desti = '$destino' and datainici <= '$inicio' and datafi >= '$final';";
             $query_result = mysqli_query($connection, $query_accomodation);
-            
+            $contador = 0;
             while ($result_formated = mysqli_fetch_row($query_result)){ 
-                $precio_seguro = 20 * $personas * $noches;?>
+                $precio_seguro = 20 * $personas * $noches;
+                $contador++; ?>
             <div class="margen bordes" style="width: 20%;">
                 <a href="escoger_oferta.php?id=<?php echo $result_formated[0];?>">
                 <table class="bordes" style="padding: 10px; margin-left: 10%;">
@@ -89,7 +90,18 @@
                 </a>
             </div>
             <?php }
-        } else {
+            if ($contador==0) { ?>
+            <div class="wrapper formularios registro buscar" style="margin-top: 30px;">
+                <h2 class="titulo">Vaya, parece que no tenemos seguros disponibles para este destino.</h2>
+                <div style="text-align:center;">
+                    <p>Sentimos que no tengamos seguros para tu destino.<br>Puedes volver a intentarlo más tarde o buscar otro viaje hacia otro de nuestros destinos.</p>
+                    <form action="index.php" method="post">
+                    <input type="submit" value="Volver al inicio" name="enviar" class="boton" style="font-weight: bold;">
+                    </form>
+                </div>
+            </div>
+            <?php }
+    } else {
             ?>
             <div class="wrapper formularios registro buscar" style="margin-top: 30px;">
                 <h2 class="titulo">Accede a esta pàgina estableciendo el destino y las fechas en la página de inicio.</h2>

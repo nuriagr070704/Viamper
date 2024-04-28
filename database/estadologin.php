@@ -27,7 +27,9 @@ session_start();
             if(password_verify($contrasenya, $fila['claupas'])){
                 //Comprobar los hashes
                 $estado = true;
-                $_SESSION['usuario']=$usuario; 
+                $_SESSION['usuario']=$usuario;
+                $_SESSION['puesto']="cliente";
+                setcookie('trabajador', false, time() + (86400 * 30), '/');
                     if (isset($_POST['recordarme'])) {
                             // Establecer una cookie para recordar al usuario
                             setcookie('usuario', $usuario, time() + (86400 * 30), '/'); 
@@ -37,7 +39,7 @@ session_start();
                 exit;
             } 
         }
-
+        
         //Trabajadores
         $consulta_trabajador = "SELECT * FROM treballadors WHERE (login=? OR correu=?)";
         $pre_consulta_trabajador = mysqli_prepare($connection, $consulta_trabajador);
@@ -49,7 +51,7 @@ session_start();
         mysqli_stmt_execute($pre_consulta_trabajador);
         
         //Ejecutar resultado de las consultas
-        $resultado_trabajador = mysqli_stmt_get_result($pre_consulta);
+        $resultado_trabajador = mysqli_stmt_get_result($pre_consulta_trabajador);
 
         if(mysqli_num_rows($resultado_trabajador) > 0){
             //Se obtiene los datos de la consulta para poder obtener la contraseña
@@ -57,13 +59,14 @@ session_start();
             if(password_verify($contrasenya, $fila['claupas'])){
                 //Comprobar los hashes
                 $estado = true;
-                $_SESSION['usuario']=$usuario; 
+                $_SESSION['usuario']=$usuario;
+                $_SESSION['puesto']="trabajador";
                     if (isset($_POST['recordarme'])) {
                             // Establecer una cookie para recordar al usuario
                             setcookie('usuario', $usuario, time() + (86400 * 30), '/'); 
                             // setcookie(nombre-cookie, usuario, tiempo  que dura en nuestro caso 30d)
                     }
-                header("Location: ../../Usuario.php"); //hay que poner un sitio del trabajador
+                header("Location: ../../Trabajador.php"); //hay que poner un sitio del trabajador
                 exit;
             } 
         }

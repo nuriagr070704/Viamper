@@ -40,7 +40,7 @@ try {
     $mail->Body    = $nombre.' ha enviado un formulario con el correo '.$correo.' especificando lo siguiente: <br> '.$motivo;
 
     $mail->send();
-    echo '<script>window.location="http://localhost/php/Contacto.php"</script>';//CAMBIAR POR VALOR DE LA DIRECCION DEL HOSTING
+     //echo "<script>window.location.replace('Contacto.php');</script>";
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }

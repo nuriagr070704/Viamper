@@ -7,16 +7,27 @@
     <link rel="stylesheet" href="CSS/EstiloViamper.css" >
     <style>
       .bordes{
-          border-top-left-radius: 7px;
-          border-top-right-radius: 7px;
-          border-bottom-left-radius: 7px;
-          border-bottom-right-radius: 7px;
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+        border-bottom-left-radius: 7px;
+        border-bottom-right-radius: 7px;
+      }
+      .centrado{
+        width: 1150px;
+        line-height: 200%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .centrado input:focus{
+        background-color: var(--fondos);
       }
     </style>
-    <title>Treball</title>
+    <title>Añadir alojamiento</title>
 </head>
 <body>
 <?php include 'header.php';
+if (isset($_SESSION['puesto'])) {
+if ($_SESSION['puesto']=="trabajador") {
 
 function cambiar_formato_hora($hora) {
   // Dividir la cadena en horas, minutos y segundos
@@ -40,6 +51,8 @@ $query = "select * from allotjament;";
 $resultado = mysqli_query($connection, $query);
 $ultimo_id_allotjament = '';
 ?>
+
+<div class="centrado registro" style="margin-top: 30px;">
 <h2>Insertar datos en alojamiento</h2>
 <table>
   <form action="<?php echo $_SERVER['PHP_SELF']; ?>" name="update" method="post" enctype="multipart/form-data">
@@ -59,36 +72,38 @@ $ultimo_id_allotjament = '';
   </thead>
   <tbody>
     <?php
-      $contador = 0;
+      $contador = 1;
       while ($result = mysqli_fetch_array($resultado)) {
       ?>
     <tr>
-      <td><input type="text" name="id" value="<?php echo $result[0] ?>" style="width: 25px;" readonly></td>
-      <td><input type="text" name="hotel" value="<?php echo $result[1] ?>" style="width: 100px;"></td>
-      <td><input type="number" name="calitat" min="1" max="5" value="<?php echo $result[2] ?>" style="width: 70px;"></td>
-      <td><input type="text" name="pais" value="<?php echo $result[3] ?>" style="width: 100px;"></td>
-      <td><input type="text" name="ciudad" value="<?php echo $result[4] ?>" style="width: 100px;"></td>
-      <td><input type="text" name="pension" value="<?php echo $result[5] ?>" style="width: 80px;"></td>
-      <td><input type="time" name="checkin" value="<?php echo cambiar_formato_hora($result[6]) ?>" style="width: 80px;"></td>
-      <td><input type="time" name="checkout" value="<?php echo cambiar_formato_hora($result[7]) ?>" style="width: 80px;"></td>
-      <td><input type="number" name="habitacion" value="<?php echo $result[8] ?>" style="width: 120px;"></td>
-      <td><input type="number" name="parking" value="<?php echo $result[9] ?>" style="width: 160px;"></td>
-      <td><input type="number" name="precio" value="<?php echo quitarDecimales($result[10]) ?>" style="width: 100px;"></td>
-      <td><input type="submit" name="update" value="Guardar" style="width: 100%;"/></td>
+      <td><input type="text" name="id_<?php echo $contador; ?>" value="<?php echo $result[0] ?>" style="width: 30px;" readonly></td>
+      <td><input type="text" name="hotel_<?php echo $contador; ?>" value="<?php echo $result[1] ?>" style="width: 100px;" readonly></td>
+      <td><input type="number" name="calitat_<?php echo $contador; ?>" min="1" max="5" value="<?php echo $result[2] ?>" style="width: 70px;"></td>
+      <td><input type="text" name="pais_<?php echo $contador; ?>" value="<?php echo $result[3] ?>" style="width: 100px;" readonly></td>
+      <td><input type="text" name="ciudad_<?php echo $contador; ?>" value="<?php echo $result[4] ?>" style="width: 100px;" readonly></td>
+      <td><input type="text" name="pension_<?php echo $contador; ?>" value="<?php echo $result[5] ?>" style="width: 80px;"></td>
+      <td><input type="time" name="checkin_<?php echo $contador; ?>" value="<?php echo cambiar_formato_hora($result[6]) ?>" style="width: 80px;"></td>
+      <td><input type="time" name="checkout_<?php echo $contador; ?>" value="<?php echo cambiar_formato_hora($result[7]) ?>" style="width: 80px;"></td>
+      <td><input type="number" name="habitacion_<?php echo $contador; ?>" value="<?php echo $result[8] ?>" style="width: 120px;"></td>
+      <td><input type="number" name="parking_<?php echo $contador; ?>" value="<?php echo $result[9] ?>" style="width: 160px;"></td>
+      <td><input type="number" name="precio_<?php echo $contador; ?>" value="<?php echo quitarDecimales($result[10]) ?>" style="width: 100px;"></td>
+      <td><input type="submit" name="update_<?php echo $contador; ?>" class="boton" value="Guardar" style="width: 100%;"/></td>
     </tr>
     <?php
     $ultimo_id_allotjament = $result[0];
     $ultimo_id_allotjament++;
+    $contador++;
     }
     ?>
   </tbody>
   </form>
 </table>
-
-<table style="margin-top: 30px;">
+</div>
+<div class="centrado registro" style="margin-top: 30px;">
+<table>
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" name="add " method="post" enctype="multipart/form-data">
   <tr>
-    <td><input type="text" name="id" value="<?php echo $ultimo_id_allotjament; ?>" style="width: 25px;" readonly></td>
+    <td><input type="text" name="id" value="<?php echo $ultimo_id_allotjament; ?>" style="width: 30px;" readonly></td>
     <td><input type="text" name="hotel" style="width: 100px;"></td>
     <td><input type="number" name="calitat" min="1" max="5" style="width: 70px;"></td>
     <td><input type="text" name="pais" style="width: 100px;"></td>
@@ -101,10 +116,11 @@ $ultimo_id_allotjament = '';
     <td><input type="number" name="precio" style="width: 100px;"></td>
   </tr>
   <tr>
-    <td colspan="12"><input type="submit" name="enviar" value="Añadir" style="width: 100%;"/></td>
+    <td colspan="12"><input type="submit" name="enviar" class="boton" value="Añadir" style="width: 100%;"/></td>
   </tr>
 </form>
 </table>
+</div>
 <?php 
 if (isset($_POST["enviar"])) {
   $hotel = $_POST["hotel"];
@@ -121,16 +137,80 @@ if (isset($_POST["enviar"])) {
   $insert = "INSERT INTO 
   `allotjament`(`ID`, `hotel`, `calitat`, `pais`, `ciutat`, `pensio`, `checkin`, `checkout`, `numhab`, `numparking`, `preu`) 
   VALUES ($ultimo_id_allotjament,'$hotel','$calidad','$pais','$ciudad','$pension','$checkin','$checkout',$numhab,$numparking,$precio)";
-  $result = mysqli_query($connection, $insert);
+  try {
+    if (mysqli_query($connection, $insert)) {
+        echo "<script>window.location.replace('Agregar_datos_bbdd.php');</script>";
+    }
+  } catch (Exception $ex) { ?>
+    <div class="wrapper formularios registro buscar" style="margin-top: 30px;">
+      <h2 class="titulo">Ups. Parece que algo ha ido mal. Intentalo más tarde.</h2>
+      <div style="text-align:center;">
+          <form action="index.php" method="post">
+          <input type="submit" value="Volver al inicio" name="enviar" class="boton" style="font-weight: bold;">
+          </form>
+      </div>
+    </div>
+  <?php }
   $_POST["enviar"] = "";
 }
-
-if (isset($_POST["update"])) {
-  //hacer update de uno que ya estaba
-  var_dump($_POST);
+for ($identificador=1; $identificador<100; $identificador++) {
+  if (isset($_POST["update_$identificador"])) {
+    $id = $_POST["id_$identificador"];
+    $hotel = $_POST["hotel_$identificador"];
+    $calidad = $_POST["calitat_$identificador"];
+    $pais = $_POST["pais_$identificador"];
+    $ciudad = $_POST["ciudad_$identificador"];
+    $pension = $_POST["pension_$identificador"];
+    $checkin = $_POST["checkin_$identificador"];
+    $checkout = $_POST["checkout_$identificador"];
+    $numhab = $_POST["habitacion_$identificador"];
+    $numparking = $_POST["parking_$identificador"];
+    $precio = $_POST["precio_$identificador"];
+    //hacer update de uno que ya estaba
+    $update = "UPDATE `allotjament` 
+    SET `calitat`='$calidad',`pensio`='$pension',`checkin`='$checkin',`checkout`='$checkout',`numhab`=$numhab,`numparking`=$numparking,`preu`=$precio 
+    WHERE ID = $id;";
+    try {
+      if (mysqli_query($connection, $update)) {
+          echo "<script>window.location.replace('Agregar_datos_bbdd.php');</script>";
+      }
+    } catch (Exception $ex) { ?>
+      <div class="wrapper formularios registro buscar" style="margin-top: 30px;">
+        <h2 class="titulo">Ups. Parece que algo ha ido mal. Intentalo más tarde.</h2>
+        <div style="text-align:center;">
+            <form action="index.php" method="post">
+            <input type="submit" value="Volver al inicio" name="enviar" class="boton" style="font-weight: bold;">
+            </form>
+        </div>
+      </div>
+    <?php }
+    $_POST["update"] = "";
+  }
 }
-
-
+} else {
+  ?>
+  <div class="wrapper formularios registro buscar" style="margin-top: 30px;">
+      <h2 class="titulo">Ups. Parece que no tienes permisos para acceder a esta página.</h2>
+      <div style="text-align:center;">
+          <form action="index.php" method="post">
+          <input type="submit" value="Volver al inicio" name="enviar" class="boton" style="font-weight: bold;">
+          </form>
+      </div>
+  </div>
+  <?php
+}
+} else {
+  ?>
+  <div class="wrapper formularios registro buscar" style="margin-top: 30px;">
+      <h2 class="titulo">Ups. Parece que no tienes permisos para acceder a esta página.</h2>
+      <div style="text-align:center;">
+          <form action="index.php" method="post">
+          <input type="submit" value="Volver al inicio" name="enviar" class="boton" style="font-weight: bold;">
+          </form>
+      </div>
+  </div>
+  <?php
+}
 include 'footer.php'; ?>
 </body>
 </html>
