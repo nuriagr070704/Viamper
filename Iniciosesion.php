@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <meta name="author" content="Núria y Óscar">
     <meta name="copyright" content="VIAMPER">
-    <link rel="stylesheet" href="css/EstiloViamper.css">
+    <link rel="stylesheet" href="CSS/EstiloViamper.css">
     <title>Inicio sesión</title>
 </head>
 <body>

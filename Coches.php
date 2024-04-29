@@ -151,7 +151,7 @@
     $query_result = mysqli_query($connection, $accomodation_query);
     ?>
     <?php
-    if(empty($query_result)){
+    if(mysqli_num_rows($query_result) == 0){
         // empty para mirar si el array esta vacio
     ?>
     <div class="wrapper formularios registro buscar" style="margin-top: 30px;">

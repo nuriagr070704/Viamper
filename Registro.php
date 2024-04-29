@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="author" content="Nuria y Oscar">
     <meta name="copyright" content="VIAMPER">
-    <link rel="stylesheet" href="css/EstiloViamper.css">
+    <link rel="stylesheet" href="CSS/EstiloViamper.css">
     <title>Registro</title>
 </head>
 <body>
